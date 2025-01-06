@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 # Load the pre-trained model
-model = load_model('Models\model.keras')
+model = load_model('Models/model.keras')
 
 # Define emotion labels
 emotion_labels = ["Angry", "Disgust", "Fear",
