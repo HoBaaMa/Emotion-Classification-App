@@ -63,12 +63,12 @@ uploaded_file = st.file_uploader(
 # Clear button
 if st.button("Clear"):
     st.session_state['uploaded_file'] = None
-    st.experimental_rerun()
 
-# Display and process the uploaded image
+# Update session state with the uploaded file
 if uploaded_file is not None:
     st.session_state['uploaded_file'] = uploaded_file
 
+# Display and process the uploaded image if it exists
 if st.session_state['uploaded_file'] is not None:
     # Convert uploaded file to an image
     img = Image.open(st.session_state['uploaded_file'])
