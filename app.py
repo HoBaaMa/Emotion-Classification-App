@@ -21,7 +21,7 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     # Convert uploaded file to an image
     img = Image.open(uploaded_file)
-    st.image(img, caption="Uploaded Image", use_column_width=True)
+    st.image(img, caption="Uploaded Image", use_container_width=True)
 
     # Preprocess the image
     img = img.convert("L")  # Convert to grayscale
