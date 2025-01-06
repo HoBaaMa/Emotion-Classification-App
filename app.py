@@ -14,71 +14,25 @@ emotion_labels = ["Angry", "Disgust", "Fear",
 st.title("Emotion Classification App")
 st.write("Upload an image to classify the emotion.")
 
-# Function to preprocess the image
-
-
-def preprocess_image(image):
-    """
-    Preprocess the input image for emotion classification.
-
-    Parameters:
-    image (PIL.Image): The input image to preprocess.
-
-    Returns:
-    np.ndarray: The preprocessed image ready for model prediction.
-    """
-    image = image.convert("L")  # Convert to grayscale
-    image = image.resize((48, 48))  # Resize to 48x48
-    image_array = np.array(image) / 255.0  # Normalize pixel values
-    image_array = np.expand_dims(image_array, axis=-1)  # Add channel dimension
-    image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
-    return image_array
-
-# Function to predict emotion
-
-
-def predict_emotion(image_array):
-    """
-    Predict the emotion from the preprocessed image.
-
-    Parameters:
-    image_array (np.ndarray): The preprocessed image array.
-
-    Returns:
-    str: The predicted emotion label.
-    """
-    prediction = model.predict(image_array)
-    predicted_emotion = emotion_labels[np.argmax(prediction)]
-    return predicted_emotion
-
-
-# Initialize session state for clearing
-if 'uploaded_file' not in st.session_state:
-    st.session_state['uploaded_file'] = None
-
 # Upload image
 uploaded_file = st.file_uploader(
     "Choose an image...", type=["jpg", "jpeg", "png"])
 
-# Clear button
-if st.button("Clear"):
-    st.session_state['uploaded_file'] = None
-
-# Update session state with the uploaded file
 if uploaded_file is not None:
-    st.session_state['uploaded_file'] = uploaded_file
-
-# Display and process the uploaded image if it exists
-if st.session_state['uploaded_file'] is not None:
     # Convert uploaded file to an image
-    img = Image.open(st.session_state['uploaded_file'])
+    img = Image.open(uploaded_file)
     st.image(img, caption="Uploaded Image", use_column_width=True)
 
     # Preprocess the image
-    img_array = preprocess_image(img)
+    img = img.convert("L")  # Convert to grayscale
+    img = img.resize((48, 48))  # Resize to 48x48
+    img_array = np.array(img) / 255.0  # Normalize pixel values
+    img_array = np.expand_dims(img_array, axis=-1)  # Add channel dimension
+    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
 
     # Make prediction
-    predicted_emotion = predict_emotion(img_array)
+    prediction = model.predict(img_array)
+    predicted_emotion = emotion_labels[np.argmax(prediction)]
 
     # Display prediction
     st.write(f"Predicted Emotion Is: **{predicted_emotion}**")
